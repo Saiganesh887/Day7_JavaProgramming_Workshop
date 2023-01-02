@@ -27,9 +27,26 @@ public class TicTacToeGame {
         System.out.println("----------");
         System.out.println(board[7] +" | "+ board[8] + " | " + board[9]);
     }
+    static void makeMove(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter positions in board between (1 - 9):");
+        int position = sc.nextInt();
+        if(position > 9 || position < 1){
+            System.out.println("Enter correct position:");
+            makeMove();
+        } else if (board[position] != ' ') {
+            System.out.println("The position in board is already filled, Please ");
+            makeMove();
+        }
+        else{
+            board[position] = playerLetter;
+            showBoard();
+        }
+    }
     public static void main(String[] args) {
         createEmptyBoard();
         chooseInputLetter();
         showBoard();
+        makeMove();
     }
 }
