@@ -60,11 +60,20 @@ public class TicTacToeGame {
             makeMove();
         }
     }
+    static void firstToStartGame(){
+        int head = 0;
+        int toss = (int)(Math.random() * 10) % 2;
+        if(toss == head)
+            System.out.println("Computer starts the play first.");
+        else
+            System.out.println("User starts the play first.");
+    }
     public static void main(String[] args) {
         createEmptyBoard();
         chooseInputLetter();
         showBoard();
         makeMove();
         checkFreeSpace();
+        firstToStartGame();
     }
 }
