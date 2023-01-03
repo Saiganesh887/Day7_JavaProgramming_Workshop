@@ -21,28 +21,25 @@ public class TicTacToeGame {
             computerLetter = 'X';
     }
     static void showBoard(){
+        System.out.println("-_-_-_-_-_-_-_-_-_-");
         System.out.println(board[1] +" | "+ board[2] + " | " + board[3]);
         System.out.println("----------");
         System.out.println(board[4] +" | "+ board[5] + " | " + board[6]);
         System.out.println("----------");
         System.out.println(board[7] +" | "+ board[8] + " | " + board[9]);
     }
-    static void makeMove(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter positions in board between (1 - 9):");
-        int position = sc.nextInt();
-        if(position > 9 || position < 1){
-            System.out.println("Enter correct position:");
-            makeMove();
-        } else if (board[position] != ' ') {
-            System.out.println("The position in board is already filled, Please ");
-            makeMove();
+    static void playerTurn(){
+        int playerMove;
+        while(true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter positions in board between (1 - 9):");
+            playerMove = sc.nextInt();
+            if (board[playerMove] == ' ') {
+                break;
+            }
         }
-        else{
-            board[position] = playerLetter;
-            showBoard();
-            makeMove();
-        }
+        System.out.println("Player choose: "+playerMove);
+        board[playerMove] = playerLetter;
     }
     static void checkFreeSpace(){
         boolean isSpaceAvailable = false;
@@ -55,25 +52,69 @@ public class TicTacToeGame {
         }
         if(!isSpaceAvailable){
             System.out.println("Board is full you can't enter any more: ");
+            System.exit(0);
         }else{
             System.out.println(freeSpaces + " free spaces is available in board.");
-            makeMove();
         }
     }
     static void firstToStartGame(){
         int head = 0;
         int toss = (int)(Math.random() * 10) % 2;
-        if(toss == head)
+        if(toss == head) {
             System.out.println("Computer starts the play first.");
-        else
+            computerTurn();
+            showBoard();
+            while (true) {
+                checkFreeSpace();
+                playerTurn();
+                showBoard();
+                computerTurn();
+                showBoard();
+                winner();
+            }
+        }
+        else {
             System.out.println("User starts the play first.");
+            playerTurn();
+            showBoard();
+            while (true) {
+                computerTurn();
+                showBoard();
+                checkFreeSpace();
+                playerTurn();
+                showBoard();
+                winner();
+            }
+        }
+    }
+    static void winner(){
+        if((board[1] == playerLetter && board[2] == playerLetter && board[3] == playerLetter) ||
+                (board[1] == playerLetter && board[4] == playerLetter && board[7] == playerLetter) ||
+                (board[1] == playerLetter && board[5] == playerLetter && board[9] == playerLetter) ||
+                (board[2] == playerLetter && board[5] == playerLetter && board[8] == playerLetter) ||
+                (board[3] == playerLetter && board[6] == playerLetter && board[9] == playerLetter) ||
+                (board[3] == playerLetter && board[5] == playerLetter && board[7] == playerLetter) ||
+                (board[4] == playerLetter && board[5] == playerLetter && board[6] == playerLetter) ||
+                (board[7] == playerLetter && board[8] == playerLetter && board[9] == playerLetter)){
+            showBoard();
+            System.out.println("Player wins the game");
+            System.exit(0);
+        }
+    }
+    static void computerTurn(){
+        int computerMove;
+        while(true){
+            computerMove = (int) Math.floor(Math.random() * 10) % 9 + 1;
+            if(board[computerMove] == ' '){
+                break;
+            }
+        }
+        System.out.println("Computer choose: "+computerMove);
+        board[computerMove] = computerLetter;
     }
     public static void main(String[] args) {
         createEmptyBoard();
         chooseInputLetter();
-        showBoard();
-        makeMove();
-        checkFreeSpace();
         firstToStartGame();
     }
 }
