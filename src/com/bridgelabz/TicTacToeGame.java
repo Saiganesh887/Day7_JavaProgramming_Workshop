@@ -66,12 +66,14 @@ public class TicTacToeGame {
         int computerMove = (int) Math.floor(Math.random() * 10) % 9 + 1;
         if(computerAsWinner()){
             checkWinner(computerLetter);
+            System.out.println("computer wins.");
+            System.exit(0);
         }else if(computerAsPlayerBlocker()){
             showBoard();
             playerTurn();
         }else if (board[computerMove] == ' ' && !computerAsPlayerBlocker()) {
             board[computerMove] = computerLetter;
-        } else if(!computerAsPlayerBlocker()) {
+        } else if(board[computerMove] != ' ') {
             System.out.println("Position is already filled.");
             computerTurn();
         }
@@ -96,15 +98,16 @@ public class TicTacToeGame {
             }
         }
         if(!isSpaceAvailable){
-            System.out.println("Match Ties.");
+            System.out.println("Board is completly filled.");
             System.exit(0);
         }else{
             System.out.println(freeSpaces + " free spaces is available in board.");
         }
     }
     static void firstToStartGame(){
-        int toss = (int)(Math.random() * 10) % 2;
-        if(toss == 0) {
+        int head = 0;
+        int toss = (int)(Math.random() * 10) % 2;//0 or 1
+        if(toss == head) {
             System.out.println("Computer starts the play first.");
             computerTurn();
         }
