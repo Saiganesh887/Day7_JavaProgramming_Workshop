@@ -12,7 +12,6 @@ public class TicTacToeGame {
             board[i] = ' ';
         }
     }
-
     static void chooseInputLetter() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose a letter for you ( X  or  O ) to play game : ");
@@ -26,7 +25,6 @@ public class TicTacToeGame {
             chooseInputLetter();
         }
     }
-
     static void showBoard() {
         System.out.println("-_-_-_-_-_-_-_-_-_-");
         System.out.println(board[1] + " | " + board[2] + " | " + board[3]);
@@ -35,7 +33,6 @@ public class TicTacToeGame {
         System.out.println("----------");
         System.out.println(board[7] + " | " + board[8] + " | " + board[9]);
     }
-
     static void playerTurn() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter positions in board between (1 - 9):");
@@ -61,7 +58,6 @@ public class TicTacToeGame {
             computerTurn();
         }
     }
-
     static void computerTurn() {
         int computerMove = (int) Math.floor(Math.random() * 10) % 9 + 1;
         if(computerAsWinner()){
@@ -71,9 +67,11 @@ public class TicTacToeGame {
         }else if(computerAsPlayerBlocker()){
             showBoard();
             playerTurn();
-        }else if (board[computerMove] == ' ' && !computerAsPlayerBlocker()) {
+        }else if(!checkWinner(playerLetter) && !checkWinner(computerLetter)) {
+            if(boardCorners());
+        } else if (board[computerMove] == ' ' && !computerAsPlayerBlocker()) {
             board[computerMove] = computerLetter;
-        } else if(board[computerMove] != ' ') {
+        }else if(board[computerMove] != ' ') {
             System.out.println("Position is already filled.");
             computerTurn();
         }
@@ -88,6 +86,24 @@ public class TicTacToeGame {
             playerTurn();
         }
     }
+    static boolean boardCorners(){
+        if (board[1] == ' ') {
+            board[1] = computerLetter;
+            return true;
+        } else if (board[3] == ' ') {
+            board[3] = computerLetter;
+            return true;
+        } else if (board[7] == ' ') {
+            board[7] = computerLetter;
+            return true;
+        } else if (board[9] == ' ') {
+            board[9] = computerLetter;
+            return true;
+        } else if(board[5] == ' '){
+            board[5] = computerLetter;
+        }
+        return false;
+    }
     static void checkFreeSpace(){
         boolean isSpaceAvailable = false;
         int freeSpaces = 0;
@@ -98,7 +114,7 @@ public class TicTacToeGame {
             }
         }
         if(!isSpaceAvailable){
-            System.out.println("Board is completly filled.");
+            System.out.println("Board is completly filled, Game Ties.");
             System.exit(0);
         }else{
             System.out.println(freeSpaces + " free spaces is available in board.");
@@ -106,7 +122,7 @@ public class TicTacToeGame {
     }
     static void firstToStartGame(){
         int head = 0;
-        int toss = (int)(Math.random() * 10) % 2;//0 or 1
+        int toss = (int)(Math.random() * 10) % 2;
         if(toss == head) {
             System.out.println("Computer starts the play first.");
             computerTurn();
